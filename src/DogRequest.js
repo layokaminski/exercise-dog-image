@@ -5,8 +5,10 @@ class DogRequest extends React.Component {
     super(props);
     this.state = {
       dog: undefined,
+      name: '',
     };
     this.fethImageDog = this.fethImageDog.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
   
   async fethImageDog() {
@@ -27,6 +29,13 @@ class DogRequest extends React.Component {
     return true;
   }
 
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
+  }
+
   componentDidUpdate() {
     const { message } = this.state.dog;
     localStorage.setItem('URL', message);
@@ -35,12 +44,13 @@ class DogRequest extends React.Component {
   }
 
   render() {
-    const { dog } = this.state;
+    const { dog, name } = this.state;
     const loading = <span>Loading...</span>
     return(
       <div>
       {!dog ? loading : (<img src={dog.message} alt="Random dog" />)}
         <div>
+          <input name="name"  value={ name }onChange={ this.handleChange } />
           <button onClick={ this.fethImageDog }>Novo Dog!</button>
         </div>
       </div>
